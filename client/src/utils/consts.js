@@ -1,6 +1,7 @@
 export const ADMIN_ROUTE = '/admin'
 export const LOGIN_ROUTE = '/login'
 export const REG_ROUTE = '/reg'
+export const REG_VNTU_ROUTE = '/regVNTU'
 export const COURSE_ROUTE = '/'
 export const PROFILE_ROUTE = '/profile'
 export const PAGE_ROUTE = '/page'

@@ -1,7 +1,7 @@
 import React, {useContext, useState} from 'react';
 import {Button, Card, Container, Form, Row} from "react-bootstrap";
 import {Context} from "../../index";
-import {COURSE_ROUTE, LOGIN_ROUTE, PAGE_ROUTE, REG_ROUTE} from "../../utils/consts";
+import {COURSE_ROUTE, LOGIN_ROUTE, PAGE_ROUTE, REG_ROUTE, REG_VNTU_ROUTE} from "../../utils/consts";
 import {NavLink, useHistory, useLocation} from "react-router-dom";
 import ShowBlock from "../Modals/ShowBlock";
 import ShowFail from "../Modals/ShowFail";
@@ -12,6 +12,7 @@ const RegComp = observer(() => {
     const history = useHistory()
     const {user} = useContext(Context)
     const [goodsVisible, setGoodsVisible] = useState(false)
+    const [role, setRole] = useState('USER')
     const [blockVisible, setBlockVisible] = useState(false)
     const [newUser, setNewUser] = useState({name:"",email:"",password:"", PIV:"", tele:""})
     const addNewUser = (e) =>{
@@ -21,7 +22,7 @@ const RegComp = observer(() => {
 
         }
         const reg = async ()=>{
-            const response = await registration(newUsers.email,newUsers.password,newUsers.PIV,newUsers.name,newUsers.tele)
+            const response = await registration(newUsers.email,newUsers.password,newUsers.PIV,newUsers.name,newUsers.tele,role)
             console.log(response)
         }
         reg()
@@ -64,6 +65,9 @@ const RegComp = observer(() => {
                 placeholder='Пароль'
             />
             <Row className="d-flex justify-content-between mt-3 pl-3 pr-3">
+                <div>
+                    Студент ВНТУ? <NavLink to={REG_VNTU_ROUTE}>Реєстрація</NavLink>
+                </div>
                 <div>
                     Є акаунт? <NavLink to={LOGIN_ROUTE}>Увійти</NavLink>
                 </div>

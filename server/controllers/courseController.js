@@ -2,6 +2,7 @@ const {Course} = require('../models/models')
 const ApiError = require('../error/ApiError')
 const path = require('path')
 const uuid = require('uuid')
+// Створення
 class CourseController{
     async create(req,res,next){
         try{
@@ -19,6 +20,7 @@ class CourseController{
         }
 
     }
+    // Отримання всіх
     async getAll(req,res) {
         let {themes,page,limit} = req.query
         page = page||1
@@ -33,6 +35,7 @@ class CourseController{
         return res.json(courses)
 
     }
+    //Отримання одного
     async getOne(req,res){
         const {id} = req.params
         const course = await Course.findOne({

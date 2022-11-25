@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Col, Container, Row} from "react-bootstrap";
 import CourseList from "../components/main/CourseList";
 import CostBar from "../components/main/CostBar";
@@ -7,10 +7,21 @@ import {observer} from "mobx-react-lite";
 import {Context} from "../index";
 import {fetchThemes} from "../http/themesAPI";
 import {fetchCourse} from "../http/courseAPI";
+import ShowBlock from "../components/Modals/ShowBlock";
+import Apologies from "../components/Modals/apologies";
 
 const Course = observer(() => {
     const {courses} = useContext(Context)
+    const {user} = useContext(Context)
+    const [oneTime,setOneTime] = useState(true)
+    const [apologiesVisible,setApologiesVisible] = useState(false)
+    if(user.users.role === 'STUDENT' && oneTime){
+        setApologiesVisible(true)
+        setOneTime(false)
+    }
     useEffect(()=>{
+
+
         fetchThemes().then(data=>{courses.setThemes(data)})
         fetchCourse().then(data=>{
 
@@ -31,6 +42,7 @@ const Course = observer(() => {
                     <CourseList/>
                 </Col>
             </Row>
+            <Apologies show={apologiesVisible} onHide={()=>setApologiesVisible(false)}/>
         </Container>
     );
 });

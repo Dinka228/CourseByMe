@@ -65,8 +65,6 @@ User.belongsToMany(Course,{through:Sertify})
 Course.belongsToMany(User,{through:Sertify})
 Task.belongsToMany(Variant,{through:TrueVariant})
 Variant.belongsToMany(Task,{through:TrueVariant})
-// Course.belongsToMany(Themes,{through:TrueVariant})
-// Themes.belongsToMany(Course,{through:TrueVariant})
 
 module.exports={
     User,

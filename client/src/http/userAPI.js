@@ -1,8 +1,8 @@
 import {$authHost,$host} from "./index";
 import jwt_decode from 'jwt-decode'
 
-export const registration = async(email,password,fullName,name,telephone)=>{
-    const {data} = await $host.post('api/user/registration',{email,password,fullName,name,telephone})
+export const registration = async(email,password,fullName,name,telephone,role)=>{
+    const {data} = await $host.post('api/user/registration',{email,password,fullName,name,telephone,role})
     localStorage.setItem('token',data.token)
     return jwt_decode(data.token)
 }
