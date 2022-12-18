@@ -9,7 +9,7 @@ export const fetchVariants = async(id)=>{
     const {data} = await $host.get(`api/variant/${id}`)
     return data
 }
-export const checkCorrect = async(id)=>{
-    const {data} = await $host.post(`api/variant/${id}`)
+export const checkCorrect = async(id,userId,courseId)=>{
+    const {data} = await $host.post(`api/variant/${id}/${userId}/${courseId}`)
     return data
 }

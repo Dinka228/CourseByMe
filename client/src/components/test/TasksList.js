@@ -9,23 +9,45 @@ import CreateStage from "../Modals/CreateStage";
 import CreateTask from "../Modals/CreateTask";
 import {checkCorrect} from "../../http/variantAPI";
 
-const TasksList = observer(({task,id,onClickCreateVariant,setTaskIdForVariant,check,sendCheckFalse}) => {
+const TasksList = observer(({task,id,onClickCreateVariant,setTaskIdForVariant,sendCheckFalse}) => {
     const {courses} = useContext(Context)
     const history = useHistory()
     const {user} = useContext(Context)
     const [varId, setVarId] = useState(null)
     const [color,setColor] = useState('none')
     const [checkForVar,setCheckForVar] = useState(false)
+    const [check,setCheck] = useState(true)
+    const [checkComplete,setCheckComplete] = useState(false)
     const [correct,setCorrect] = useState('')
     const [choseInput,setChoseInput] = useState(null)
-    function sendVar(id){
-        checkCorrect(id).then(data=>{
-            setCorrect(data.correct)
+    const [complete,setComplete] = useState('')
+    useEffect(()=>{
+        console.log('Draste')
+        console.log( courses.completeTask)
+        courses.completeTask.filter(completeTask => {
+
+            if(+completeTask.taskId === +task.id){
+                setCheckComplete(true)
+                return completeTask
+            }
         })
+        return () => {
+            courses.setCheck(false)
+        }
+        },[courses.check])
+
+    function sendVar(id){
+        const variantId = {id:id}
+        courses.currTest.push(variantId)
+        console.log(courses.currTest)
+
     }
     return (
         <Container>
-            <h2>{task.text}</h2>
+
+            <h2>{checkComplete ? `${task.text} (Completed)` : `${task.text}`}</h2>
+
+
             <Row className='d-flex flex-column'>
                 {courses.variants.filter(variant=>{
                     if(+variant.taskId === +task.id){
@@ -36,6 +58,7 @@ const TasksList = observer(({task,id,onClickCreateVariant,setTaskIdForVariant,ch
                         sendVar(id)
                     }} check={check}
                                  correct={correct}
+                                 taskName = {task.text}
                                  sendCheckFalse={sendCheckFalse}
                                  setCheckForAnother={()=>{setCheckForVar(true)}}
                                  checkForAnother={checkForVar}

@@ -1,3 +1,4 @@
+const {CompleteTask} = require("../models/models");
 const {Task} = require("../models/models");
 
 class TaskController{
@@ -11,6 +12,13 @@ class TaskController{
         const {stageId} = req.params
         const task = await Task.findAll({
             where:{stageId}
+        })
+        return res.json(task)
+    }
+    async getCompleteTask(req,res){
+        const {userId} = req.params
+        const task = await CompleteTask.findAll({
+            where:{userId:userId}
         })
         return res.json(task)
     }

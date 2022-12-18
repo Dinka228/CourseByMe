@@ -3,7 +3,7 @@ import {observer} from "mobx-react-lite";
 import {Button, Card, Col, Container, Image, ListGroup, Nav} from "react-bootstrap";
 import {Context} from "../index";
 import {useHistory, useParams} from 'react-router-dom'
-import {fetchOneCourse} from "../http/courseAPI";
+import {createUserCourse, fetchOneCourse, fetchUserCourse} from "../http/courseAPI";
 import {TEST_ROUTE} from "../utils/consts";
 import {fetchStages} from "../http/stageAPI";
 
@@ -30,12 +30,21 @@ const CoursesPage = observer(() => {
                     </div>
                     <div className='d-flex flex-row justify-content-between'>
                         <div>
-                            <Button variant={"outline-success"} onClick={()=>history.push(TEST_ROUTE + `/`+course.id)}>
+                            <Button variant={"outline-success"} onClick={()=>{
+                                fetchUserCourse(user.users.id,courses.currCourse.id).then(data=>{
+                                    courses.setCurrProgress(data)})
+                                history.push(TEST_ROUTE + `/`+course.id)
+                            }}>
                             Переглянути курс
                             </Button>
                         </div>
                         <div >
-                            <Button variant={"outline-success"}>
+                            <Button variant={"outline-success"} onClick={()=>{
+                                createUserCourse(user.users.id,courses.currCourse.id).then(data=>{
+                                    courses.setCurrProgress(data)
+                                    console.log(data)})
+                                history.push(TEST_ROUTE + `/`+course.id)
+                            }}>
                             Розпочати курс
                             </Button>
                         </div>

@@ -12,7 +12,6 @@ const User = sequelize.define('user',{
 })
 const Course = sequelize.define('course',{
     id:{type:DataTypes.INTEGER,primaryKey:true,autoIncrement:true},
-    themes:{type:DataTypes.STRING},
     name:{type:DataTypes.STRING,allowNull:false},
     cost:{type:DataTypes.INTEGER},
     img:{type:DataTypes.STRING},
@@ -21,15 +20,12 @@ const Course = sequelize.define('course',{
 const Stage = sequelize.define('stage',{
     id:{type:DataTypes.INTEGER,primaryKey:true,autoIncrement:true},
     name:{type:DataTypes.STRING,allowNull:false},
-    progress:{type:DataTypes.INTEGER},
-    completeAnswer:{type:DataTypes.INTEGER},
-    answerCount:{type:DataTypes.INTEGER}
+    progress:{type:DataTypes.INTEGER}
 })
 const Task = sequelize.define('task',{
     id:{type:DataTypes.INTEGER,primaryKey:true,autoIncrement:true},
     text:{type:DataTypes.STRING,allowNull:false},
-    progress:{type:DataTypes.INTEGER},
-    correct:{type:DataTypes.STRING}
+    progress:{type:DataTypes.INTEGER}
 })
 const Variant = sequelize.define('variant',{
     id:{type:DataTypes.INTEGER,primaryKey:true,autoIncrement:true},
@@ -47,11 +43,12 @@ const Progress = sequelize.define('progress',{
 const Sertify = sequelize.define('sertify',{
     id:{type:DataTypes.INTEGER,primaryKey:true,autoIncrement:true},
 })
-const TrueVariant = sequelize.define('trueVariant',{
+const CompleteTask = sequelize.define('completeTask',{
     id:{type:DataTypes.INTEGER,primaryKey:true,autoIncrement:true}
 })
 
-
+Themes.hasMany(Course)
+Course.belongsTo(Themes)
 Course.hasMany(Stage)
 Stage.belongsTo(Course)
 Stage.hasMany(Task)
@@ -63,8 +60,8 @@ User.belongsToMany(Course,{through:Progress})
 Course.belongsToMany(User,{through:Progress})
 User.belongsToMany(Course,{through:Sertify})
 Course.belongsToMany(User,{through:Sertify})
-Task.belongsToMany(Variant,{through:TrueVariant})
-Variant.belongsToMany(Task,{through:TrueVariant})
+User.belongsToMany(Task,{through:CompleteTask})
+Task.belongsToMany(User,{through:CompleteTask})
 
 module.exports={
     User,
@@ -75,5 +72,5 @@ module.exports={
     Variant,
     Progress,
     Sertify,
-    TrueVariant
+    CompleteTask
 }

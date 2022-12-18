@@ -9,3 +9,7 @@ export const fetchTasks = async(id)=>{
     const {data} = await $host.get(`api/task/${id}`)
     return data
 }
+export const fetchCompleteTasks = async(id)=>{
+    const {data} = await $host.get(`api/task/complete/${id}`)
+    return data
+}

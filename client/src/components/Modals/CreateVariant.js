@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Button, Form, Modal} from "react-bootstrap";
 import {Context} from "../../index";
 import {observer} from "mobx-react-lite";
@@ -7,22 +7,20 @@ import {createVariant, fetchVariants} from "../../http/variantAPI";
 
 const CreateVariant = observer(({show,onHide,stageId,taskId}) => {
     const [textVariant,setTextVariant] = useState('')
-    const [correct,setCorrect] = useState(false)
-    const [correctString,setCorrectString] = useState('')
+    const [correctString,setCorrectString] = useState('No')
     const {courses} = useContext(Context)
     const addVariant=()=>{
-        if(correct){
-            setCorrectString('Yes')
-        }else{
-            setCorrectString('No')
-        }
         const formData = new FormData()
         formData.append('text',textVariant)
         formData.append('taskId',taskId)
         formData.append('stageId',stageId)
         formData.append('correct',correctString)
-        createVariant(formData).then(data=>onHide())
-        fetchVariants(stageId).then(data=>courses.setVariants(data))
+        setCorrectString('No')
+        createVariant(formData).then(data=>{
+            fetchVariants(stageId).then(data=>courses.setVariants(data))
+            console.log(data)
+            onHide()
+        })
     }
     return (
         <Modal
@@ -45,9 +43,12 @@ const CreateVariant = observer(({show,onHide,stageId,taskId}) => {
                         placeholder={"Введіть питання"}
                     />
                     <div className="form-check">
-                        <input className="form-check-input" type="checkbox" value={correct} id="flexCheckDefault"  onChange={()=>{
-
-                            setCorrect(true)
+                        <input className="form-check-input" type="checkbox" id="flexCheckDefault"  onChange={()=>{
+                            if(correctString === 'Yes'){
+                                setCorrectString('No')
+                            }else if(correctString === 'No'){
+                                setCorrectString('Yes')
+                            }
 
                         }}/>
                             <label className="form-check-label" htmlFor="flexCheckDefault">

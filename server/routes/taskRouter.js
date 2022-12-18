@@ -5,5 +5,6 @@ const checkRole = require('../middleware/checkRoleMiddleware')
 
 router.post('/',taskController.create)
 router.get('/:stageId',taskController.getAll)
+router.get('/complete/:userId',taskController.getCompleteTask)
 
 module.exports = router

@@ -13,8 +13,13 @@ const CreateTask = ({show,onHide,stageId}) => {
         formData.append('text',textTask)
         formData.append('progress',`${progress}`)
         formData.append('stageId',stageId)
-        createTask(formData).then(data=>onHide())
-        fetchTasks(stageId).then(data=>courses.setTasks(data))
+        courses.setCurrProgressStage(+courses.currProgressStage + +progress)
+        createTask(formData).then(data=>{
+            console.log(courses.currProgressStage)
+            console.log(courses.selectedStage.progress)
+            fetchTasks(stageId).then(data=>courses.setTasks(data))
+            onHide()
+        })
     }
     return (
         <Modal

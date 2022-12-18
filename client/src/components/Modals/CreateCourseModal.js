@@ -18,7 +18,7 @@ const CreateCourseModal =  observer(({show,onHide}) => {
     const addNewCourse = ()=>{
         const formData = new FormData()
         formData.append('name',name)
-        formData.append('themes',courses.selectedThemes.name)
+        formData.append('themesId',courses.selectedThemes.id)
         formData.append('cost',`${cost}`)
         formData.append('description',description)
         formData.append('img',file)

@@ -9,12 +9,13 @@ import {Spinner} from "react-bootstrap";
 
 const App =observer(()=> {
     const {user} = useContext(Context)
-    const {loading,setLoading}=useState(true)
+    const [loading,setLoading]=useState(true)
 
     useEffect(()=>{
         setTimeout(()=>{
             check().then(data=>{
                 user.setUser(data)
+                console.log(user.users)
                 user.setIsAuth(true)
             }).finally(()=>setLoading(false))
         },2000)

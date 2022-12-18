@@ -1,19 +1,24 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Button, Form, Modal} from "react-bootstrap";
 import {createTheme} from "../../http/themesAPI";
 import {observer} from "mobx-react-lite";
-import {createStage} from "../../http/stageAPI";
+import {createStage, fetchStages} from "../../http/stageAPI";
 import {createCourse} from "../../http/courseAPI";
+import {Context} from "../../index";
 
 const CreateStage = observer(({show,onHide,stageCourse}) => {
     const [nameStage,setNameStage] = useState('')
     const [progress,setProgress] = useState(0)
+    const {courses} = useContext(Context)
     const addStage=()=>{
         const formData = new FormData()
         formData.append('name',nameStage)
         formData.append('progress',`${progress}`)
         formData.append('courseId',stageCourse.id)
-        createStage(formData).then(data=>onHide())
+        createStage(formData).then(data=>{
+            fetchStages(stageCourse.id).then(data=>courses.setStages(data))
+            onHide()
+        })
     }
     return (
         <Modal

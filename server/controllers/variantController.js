@@ -1,3 +1,6 @@
+const {Op} = require("sequelize");
+const {Progress} = require("../models/models");
+const {CompleteTask} = require("../models/models");
 const {Variant,Task} = require("../models/models");
 
 class VariantController{
@@ -15,25 +18,32 @@ class VariantController{
         return res.json(variant)
     }
     async checkCorrect(req,res){
-        const {id} = req.params
+        const {id,userId,courseId} = req.params
         const variant = await Variant.findOne({where:{id}})
         const taskId = variant.taskId
-        if(variant.correct === "Yes"){
-            await Task.update({
-                correct:"Yes"
-            },{
-                where:{id: variant.taskId}
+        const taskProgress = await Task.findOne({where:{id:variant.taskId}})
+        const checkCompleteTask = await CompleteTask.findOne({where:{[Op.and]:[{userId:userId},{taskId:taskId}]}})
+        let updateProgress
+        if(variant.correct === 'Yes'){
+            if(!checkCompleteTask){
+                await CompleteTask.create({userId,taskId})
+                const userCourse = await Progress.findOne({
+                    where:{[Op.and]:[{userId:userId},{courseId:courseId}]}
+                })
+                updateProgress = +userCourse.progress + +taskProgress.progress
+                await Progress.update({progress:updateProgress},{where:{[Op.and]:[{userId:userId},{courseId:courseId}]}})
+                const updatedProgress = await Progress.findOne({
+                    where:{[Op.and]:[{userId:userId},{courseId:courseId}]}
+                })
+                return res.json(updatedProgress)
+            }
+
+        }
+        else{
+            const updatedProgress = await Progress.findOne({
+                where:{[Op.and]:[{userId:userId},{courseId:courseId}]}
             })
-            const taskStatus = await Task.findOne({where:{id:taskId}})
-             res.json(taskStatus)
-        }else{
-            await Task.update({
-                correct:"No"
-            },{
-                where:{id: variant.taskId}
-            })
-            const taskStatus = await Task.findOne({where:{id:taskId}})
-            res.json(taskStatus)
+            return res.json(updatedProgress)
         }
 
     }
