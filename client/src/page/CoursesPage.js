@@ -29,15 +29,6 @@ const CoursesPage = observer(() => {
                         {course.name}
                     </div>
                     <div className='d-flex flex-row justify-content-between'>
-                        <div>
-                            <Button variant={"outline-success"} onClick={()=>{
-                                fetchUserCourse(user.users.id,courses.currCourse.id).then(data=>{
-                                    courses.setCurrProgress(data)})
-                                history.push(TEST_ROUTE + `/`+course.id)
-                            }}>
-                            Переглянути курс
-                            </Button>
-                        </div>
                         <div >
                             <Button variant={"outline-success"} onClick={()=>{
                                 createUserCourse(user.users.id,courses.currCourse.id).then(data=>{

@@ -16,6 +16,7 @@ const TypeBar = observer(() => {
                             courses.setSelectedThemes({})
                         }else{
                             courses.setSelectedThemes(themes)
+                            console.log(courses.selectedThemes)
                         }
 
                     }

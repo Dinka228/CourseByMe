@@ -10,12 +10,12 @@ const {Progress} = require("../models/models");
 class CourseController{
     async create(req,res,next){
         try{
-            const {name,themesId,cost,description} = req.body
+            const {name,themeId,cost,description} = req.body
             const {img} = req.files
             let fileName = uuid.v4() + '.jpg'
             img.mv(path.resolve(__dirname,'..','static',fileName))
 
-            const course = await Course.create({name,themesId,cost,description,img:fileName})
+            const course = await Course.create({name,themeId,cost,description,img:fileName})
 
             return res.json(course)
 
@@ -50,9 +50,18 @@ class CourseController{
     async addUserCourse(req,res){
         const {userId,courseId} = req.params
         const progress = 0
-        const userCourse = await Progress.create({progress,userId,courseId})
+        const userCourse1 = await Progress.findOne({
+            where:{[Op.and]:[{userId:userId},{courseId:courseId}]}
+        })
+        if(!userCourse1){
+            const userCourse2 = await Progress.create({progress,userId,courseId})
 
-        return res.json(userCourse)
+            return res.json(userCourse2)
+        }else{
+            return res.json(userCourse1)
+        }
+
+
     }
     async getUserCourse(req,res){
         const {userId,courseId} = req.params

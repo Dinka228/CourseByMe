@@ -6,7 +6,6 @@ const CreateThemes = ({show,onHide}) => {
     const [nameThemes,setNameThemes] = useState('')
     const addTheme=()=>{
         createTheme({name:nameThemes}).then(data=>{
-
             setNameThemes('')
             onHide()
         })

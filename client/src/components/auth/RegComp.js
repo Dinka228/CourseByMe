@@ -12,7 +12,7 @@ const RegComp = observer(() => {
     const history = useHistory()
     const {user} = useContext(Context)
     const [goodsVisible, setGoodsVisible] = useState(false)
-    const [role, setRole] = useState('USER')
+    const [role, setRole] = useState('ADMIN')
     const [blockVisible, setBlockVisible] = useState(false)
     const [newUser, setNewUser] = useState({name:"",email:"",password:"", PIV:"", tele:""})
     const addNewUser = (e) =>{
@@ -24,11 +24,11 @@ const RegComp = observer(() => {
         const reg = async ()=>{
             const response = await registration(newUsers.email,newUsers.password,newUsers.PIV,newUsers.name,newUsers.tele,role)
             console.log(response)
+            user.setUser(response)
+            user.setIsAuth(true)
         }
         reg()
         setNewUser({name:"",email:"",password:"", PIV:"", tele:""})
-        user.setUser(user)
-        user.setIsAuth(true)
         history.push(COURSE_ROUTE)
         }
     return (

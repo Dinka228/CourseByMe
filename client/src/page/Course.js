@@ -14,12 +14,14 @@ import {Badge, Image, ListGroup} from "react-bootstrap";
 const Course = observer(() => {
     const {courses} = useContext(Context)
     const {user} = useContext(Context)
-    const [oneTime,setOneTime] = useState(true)
     const [apologiesVisible,setApologiesVisible] = useState(false)
-    if(user.users.role === 'STUDENT' && oneTime){
-        setApologiesVisible(true)
-        setOneTime(false)
-    }
+    useEffect(()=>{
+        if(user.oneTime){
+            setApologiesVisible(true)
+            user.setOneTime(false)
+            console.log(user.oneTime)
+        }
+    },[])
     useEffect(()=>{
 
         fetchThemes().then(data=>{courses.setThemes(data)})

@@ -15,7 +15,8 @@ const Course = sequelize.define('course',{
     name:{type:DataTypes.STRING,allowNull:false},
     cost:{type:DataTypes.INTEGER},
     img:{type:DataTypes.STRING},
-    description:{type:DataTypes.STRING}
+    description:{type:DataTypes.STRING},
+    themeId:{type:DataTypes.INTEGER}
 })
 const Stage = sequelize.define('stage',{
     id:{type:DataTypes.INTEGER,primaryKey:true,autoIncrement:true},
@@ -47,8 +48,6 @@ const CompleteTask = sequelize.define('completeTask',{
     id:{type:DataTypes.INTEGER,primaryKey:true,autoIncrement:true}
 })
 
-Themes.hasMany(Course)
-Course.belongsTo(Themes)
 Course.hasMany(Stage)
 Stage.belongsTo(Course)
 Stage.hasMany(Task)

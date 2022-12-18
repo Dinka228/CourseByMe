@@ -16,7 +16,6 @@ const CourseList = observer(() => {
     const [goodsVisible, setGoodsVisible] = useState(false)
     const [myCourse, setMyCourse] = useState(false)
     const [searchCheck,setSearchCheck]=useState("")
-    console.log(user.users)
     return (
         <Container>
             <Form.Control
@@ -29,13 +28,11 @@ const CourseList = observer(() => {
             <Row className='d-flex'>
                 {courses.courses.filter(course=>{
                     if(courses.selectedThemes.name){
-                        if(+course.themesId === +courses.selectedThemes.id){
+                        if(+course.themeId + 1 === +courses.selectedThemes.id){
                             return course
                         }
                     }
-                    else if (searchCheck === "") {
-                        return course
-                    } else if (searchCheck !== "") {
+                    else if (searchCheck !== "") {
                         if (course.name.startsWith(searchCheck)) {
                             return course
                         }

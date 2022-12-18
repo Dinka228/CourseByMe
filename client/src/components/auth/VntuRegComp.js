@@ -25,6 +25,7 @@ const VntuRegComp = observer(() => {
             const response = await registration(newUsers.email,newUsers.password,newUsers.PIV,newUsers.name,newUsers.tele,role)
             console.log(response)
             setNewUser({name:"",email:"",password:"", PIV:"", tele:""})
+            user.setOneTime(true)
             user.setUser(response)
             user.setIsAuth(true)
             history.push(COURSE_ROUTE)

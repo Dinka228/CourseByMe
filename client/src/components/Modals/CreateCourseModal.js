@@ -15,22 +15,26 @@ const CreateCourseModal =  observer(({show,onHide}) => {
     const [cost,setCost]=useState(0)
     const [description,setDescription]=useState('')
     const [file,setFile]=useState(null)
+    const [themesId,setThemesId]=useState(0)
     const addNewCourse = ()=>{
+        console.log(courses.selectedThemes.id)
+        setThemesId(courses.selectedThemes.id)
         const formData = new FormData()
         formData.append('name',name)
-        formData.append('themesId',courses.selectedThemes.id)
+        formData.append('themeId',`${themesId}`)
         formData.append('cost',`${cost}`)
         formData.append('description',description)
         formData.append('img',file)
-        // console.log(formData.getAll('img'))
 
-        createCourse(formData).then(data=>onHide())
+        createCourse(formData).then(data=>{
+            console.log(data)
+            onHide()
+        })
         courses.setSelectedThemes({})
     }
     const selectFile=e=>{
         console.log(e.target.files[0])
         setFile(e.target.files[0])
-        console.log(file)
     }
 
     return (
@@ -75,7 +79,11 @@ const CreateCourseModal =  observer(({show,onHide}) => {
                         <Dropdown.Menu>
                             {courses.themes.map(type=>
                                 <Dropdown.Item
-                                    onClick={()=>courses.setSelectedThemes(type)}
+                                    onClick={()=>{
+
+                                        courses.setSelectedThemes(type)
+                                        console.log(courses.selectedThemes.id)
+                                    }}
                                     key={type.id}
                                 >
                                     {type.name}

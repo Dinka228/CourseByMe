@@ -9,7 +9,12 @@ import {observer} from "mobx-react-lite";
 const NavBar = observer( () => {
     const history = useHistory()
     const {user} = useContext(Context)
+    const {courses} = useContext(Context)
     const  logOut=()=>{
+        courses.setCurrProgress({})
+        courses.setTasks({})
+        courses.setCurrProgressStage({})
+        courses.setCurrTest({})
         user.setUser({})
         user.setIsAuth(false)
         history.push(LOGIN_ROUTE)
